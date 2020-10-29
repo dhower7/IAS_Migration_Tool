@@ -2,25 +2,19 @@ import requests
 import json
 from customer import Customer
 
-token_source = ""
-token_destination = ""
-app_name_source = ""
-appid_destination = ""
-configid_source = ""
-configid_destination = ""
-url_base = "https://us.api.insight.rapid7.com/ias/v1"
 
-"""
 ##User Input for required information
 token_source = input("Enter Source Customer API Key: ")
 token_destination = input("Enter Destination Customer API Key: ")
+
+#source_customer = Customer(token_source)
+source_customer = Customer('0c47f4a0-a3a5-411c-9e6b-149190618560')
+source_customer.get_apps()
+
 """
-source_customer = Customer(token_source)
 destination_customer = Customer(token_destination)
-
-source_customer.get()
-destination_customer.get()
-
+destination_customer.create_apps()
+"""
 
 """
 def get_applications():
@@ -53,13 +47,8 @@ def get_applications():
             name_list.append(data)
         return name_list
 """
-"""
-a = get_applications()
 
-for key, value in a(data):
-    print(key, ' : ', value)
-
-    
+"""    
 def get_configs():
     pass
 def create_applications():
