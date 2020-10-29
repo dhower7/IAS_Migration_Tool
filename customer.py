@@ -1,7 +1,6 @@
 import requests
 from base_config import *
 
-from base_config import *
 
 class Customer:
     def __init__(self, token):
