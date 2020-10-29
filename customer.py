@@ -24,14 +24,11 @@ class Customer:
         app_info = []
         for item in data:
             app_info.append((item.get('id'), item.get('name'), item.get('description')))
-        print(app_info)
         return app_info
-"""
+
     def creat_apps(self):
         self.url = url_base + "/apps"
         self.payload = {
             "name": app_name,
             "description": app_description
         }
-"""
- 
