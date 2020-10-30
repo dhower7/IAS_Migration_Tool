@@ -22,12 +22,12 @@ if token_original != "":
 else:
     print("Original Customer API Key is missing.")
 
-#print(app_list[0])
+#print(app_list)
 
-#for id in app_list(id, name, description):
-#    print(id)
+##Enumerate app_list to create a list of apps with their appid, name and description
+##This will be used to feed back into the customer class to tell the create_apps function what apps to create
+##Is this the correct place to put this or should this work be done in the Customer class??
 
-#apps = list(enumerate(app_list, start=1))
 def app_info():
     app_id = []
     app_name = []
