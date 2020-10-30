@@ -25,9 +25,18 @@ class Customer:
             app_info.append((item.get('id'), item.get('name'), item.get('description')))
         return app_info
 
-    def creat_apps(self):
+    def create_apps(self):
         self.url = url_base + "/apps"
         self.payload = {
             "name": app_name,
             "description": app_description
         }
+        try:
+            response = requests.get(self.url, headers=self.headers, data = self.payload)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        status = response.json()
+        if status == "200 OK":
+            print("successfully create: "+ app_name)
+        return status
