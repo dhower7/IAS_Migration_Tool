@@ -32,7 +32,7 @@ def app_info(app_enumeration):
     return [item[0] for item in app_enumeration]
 print(app_info(app_enumeration))
 
-t
+te
 ##Pseudocode for remaining requirements
 
 """
