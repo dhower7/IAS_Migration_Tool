@@ -40,3 +40,33 @@ class Customer:
         if status == "200 OK":
             print("successfully create: "+ app_name)
         return status
+"""
+def get_configs():
+    pass
+
+def get_new_app_id():
+    url_endpoint = "/apps"
+    url = url_base + url_endpoint
+    payload = {}
+    headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-api-key': token_destination
+    }
+    if token_destination != token_source:
+        try:
+            response = requests.get(url, headers=headers, data = payload)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        response = response.json()
+        name_list = []
+        for data in response['data']:
+            name_list.append(data['id'])
+            return name_list
+    else:
+        return("destination customer api key: "+ token_destination+ " matches source customer api key: "+ token_source+ ". These should be different. Please validate that you are using the correct API keys for both source and destination.")
+
+def create_configs():
+    pass
+"""
