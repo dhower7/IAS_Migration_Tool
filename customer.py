@@ -3,7 +3,7 @@ from base_config import *
 
 
 class Customer:
-    def __init__(self, token):
+    def __init__(self, token, app_name, app_description):
         self.url = url_base + "/"
         self.payload = {}
         self.headers = {
@@ -25,7 +25,7 @@ class Customer:
             app_info.append((item.get('id'), item.get('name'), item.get('description')))
         return app_info
 
-    def create_apps(self):
+    def create_apps(self, app_name, app_description):
         self.url = url_base + "/apps"
         self.payload = {
             "name": app_name,

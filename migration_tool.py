@@ -4,79 +4,64 @@ from customer import Customer
 
 
 ##User Input for required information
-token_original = input("Enter Original Customer API Key: ")
-token_destination = input("Enter Destination Customer API Key: ")
+#token_original = input("Enter Original Customer API Key: ")
+#token_destination = input("Enter Destination Customer API Key: ")
 
-#enumerate_origin_apps = Customer(token_original)
-enumerate_origin_apps = Customer('0c47f4a0-a3a5-411c-9e6b-149190618560')
-if token_source != "":
+## Use predefined API Keys
+## use Razordemo -> "Applied Engineering - US" API Key for original customer 
+token_original = ('0f6352ba-107b-48ea-9f7d-a3d536eb4dd3')
+## Use Razordemo -> "Specialists Research" API Key for Destination
+token_destination = ('0c47f4a0-a3a5-411c-9e6b-149190618560')
+
+
+##Enumerate applications in the original customer
+enumerate_origin_apps = Customer(token_original)
+if token_original != "":
     enumerate_origin_apps.get_apps()
+    app_list = enumerate_origin_apps.get_apps()
 else:
     print("Original Customer API Key is missing.")
 
-create_destination_apps = Customer(token_destination)
-#create_destination_apps = Customer('insert static api key')
+#print(app_list[0])
+
+#for id in app_list(id, name, description):
+#    print(id)
+
+#apps = list(enumerate(app_list, start=1))
+def app_info():
+    app_id = []
+    app_name = []
+    app_description = []
+    for ids in app_list:
+        for id in app_info:
+            app_id.append(id)
+        app_name.append(names)
+        app_description.append(descriptions)
+    print(app_id)
+    print(app_name)
+    print(app_description)
+    
+print(type(app_list))
+
+
+#app_description.append((descriptions.get([2]))
+
+"""
+
+##Create applications pulled from the original customer into the destination customer
+create_destination_apps = Customer(token_destination, app_list)
 if token_destination != "":
     create_destination_apps.create_apps()
 else:
     print("Destination Customer API Key is missing.")
-
-"""
-destination_customer = Customer(token_destination)
-destination_customer.create_apps()
 """
 
-"""
-def get_applications():
-    url_endpoint = "/apps"
-    url = url_base + url_endpoint
-    payload = {}
-    headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'x-api-key': token_source
-    }
-    if token_source != token_destination:
-        try:
-            response = requests.get(url, headers=headers, data = payload)
-            response.raise_for_status()
-        except requests.HTTPError as exception:
-            return exception
-
-        response = response.json()
-        data = response
-        return data
-
-    else:
-        return("destination customer api key: "+ token_destination+ " matches source customer api key: "+ token_source+ ". These should be different. Please validate that you are using the correct API keys for both source and destination.")
-"""
-
-"""
-        name_list = []
-        for data in response['data']:
-            name_list.append(data)
-        return name_list
-"""
+## Todo psuedo code ##
 
 """    
 def get_configs():
     pass
-def create_applications():
-    while app_name_source != "":
-        url_endpoint = "/apps"
-        url = url_base + url_endpoint
-        payload = {'name': app_name_source, 'description': ""}
-        headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'x-api-key': token_destination
-            }
-        try:
-            response = requests.request("POST", url, headers=headers, data = payload)
-            response.raise_for_status()
-        except requests.HTTPError as exception:
-            return exception
-        
+
 def get_new_app_id():
     url_endpoint = "/apps"
     url = url_base + url_endpoint
@@ -100,7 +85,7 @@ def get_new_app_id():
     else:
         return("destination customer api key: "+ token_destination+ " matches source customer api key: "+ token_source+ ". These should be different. Please validate that you are using the correct API keys for both source and destination.")
 
-def creat_configs():
+def create_configs():
     pass
 
 #app_name_source = get_applications()
