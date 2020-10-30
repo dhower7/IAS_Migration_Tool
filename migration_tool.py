@@ -40,5 +40,3 @@ def app_info():
     print(app_id)
     print(app_name)
     print(app_description)
-    
-print(type(app_list))
