@@ -17,24 +17,30 @@ token_destination = ('0c47f4a0-a3a5-411c-9e6b-149190618560')
 ##Enumerate applications in the original customer
 enumerate_origin_apps = Customer(token_original)
 if token_original != "":
-    enumerate_origin_apps.get_apps()
+#    enumerate_origin_apps.get_apps()
     app_enumeration = enumerate_origin_apps.get_apps()
 else:
     print("Original Customer API Key is missing.")
 
 #print(app_enumeration)
 
+create_app_in_cust_two = Customer(token_destination)
+for app in app_enumeration:
+    create_app_in_cust_two.create_apps(app['name'], app.get('description', ''))
+
+"""
+
 ##Enumerate app_list to create a list of apps with their appid, name and description
 ##This will be used to feed back into the customer class to tell the create_apps function what apps to create
 ##Is this the correct place to put this or should this work be done in the Customer class??
 
-def app_info(app_enumeration):
-    return [item[0] for item in app_enumeration]
-print(app_info(app_enumeration))
+#app_name = [app_enumeration]
 
-te
+#print(app_info(app_enumeration))
+
 ##Pseudocode for remaining requirements
 
+"""
 """
 - pull app names from old customer -> app_list
     - app_list - content
