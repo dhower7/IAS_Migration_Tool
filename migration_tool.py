@@ -4,12 +4,22 @@ from customer import Customer
 
 
 ##User Input for required information
-token_source = input("Enter Source Customer API Key: ")
+token_original = input("Enter Original Customer API Key: ")
 token_destination = input("Enter Destination Customer API Key: ")
 
-#source_customer = Customer(token_source)
-source_customer = Customer('0c47f4a0-a3a5-411c-9e6b-149190618560')
-source_customer.get_apps()
+#enumerate_origin_apps = Customer(token_original)
+enumerate_origin_apps = Customer('0c47f4a0-a3a5-411c-9e6b-149190618560')
+if token_source != "":
+    enumerate_origin_apps.get_apps()
+else:
+    print("Original Customer API Key is missing.")
+
+create_destination_apps = Customer(token_destination)
+#create_destination_apps = Customer('insert static api key')
+if token_destination != "":
+    create_destination_apps.create_apps()
+else:
+    print("Destination Customer API Key is missing.")
 
 """
 destination_customer = Customer(token_destination)
