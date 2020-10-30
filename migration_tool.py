@@ -18,25 +18,49 @@ token_destination = ('0c47f4a0-a3a5-411c-9e6b-149190618560')
 enumerate_origin_apps = Customer(token_original)
 if token_original != "":
     enumerate_origin_apps.get_apps()
-    app_list = enumerate_origin_apps.get_apps()
+    app_enumeration = enumerate_origin_apps.get_apps()
 else:
     print("Original Customer API Key is missing.")
 
-#print(app_list)
+#print(app_enumeration)
 
 ##Enumerate app_list to create a list of apps with their appid, name and description
 ##This will be used to feed back into the customer class to tell the create_apps function what apps to create
 ##Is this the correct place to put this or should this work be done in the Customer class??
 
-def app_info():
-    app_id = []
-    app_name = []
-    app_description = []
-    for ids in app_list:
-        for id in app_info:
-            app_id.append(id)
-        app_name.append(names)
-        app_description.append(descriptions)
-    print(app_id)
-    print(app_name)
-    print(app_description)
+def app_info(app_enumeration):
+    return [item[0] for item in app_enumeration]
+print(app_info(app_enumeration))
+
+t
+##Pseudocode for remaining requirements
+
+"""
+- pull app names from old customer -> app_list
+    - app_list - content
+        - app id
+        - app name
+        - app description
+- create apps in new customer based on app name(s) in app_list
+
+- pull users from old customer -> user_list
+    - user_list - content
+        - user name
+        - user email
+
+- iterate through apps to pull configs from each app -> config_list
+    - config_list - content
+        - config name
+        - config.xml
+        - files
+
+- pull app ids and names from new customer -> app_list_new
+    - app_list_new - content
+        - app id
+        - app name
+
+- upload files from old customer to new customer
+
+- create configs in new customer based on config name in config_list
+
+"""
