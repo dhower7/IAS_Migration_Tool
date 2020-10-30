@@ -1,5 +1,6 @@
 import requests
-from base_config import *
+
+url_base = "https://us.api.insight.rapid7.com/ias/v1"
 
 ##Customer class to handle all work done with both source and destination customers
 class Customer:
@@ -23,7 +24,7 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
-        print("API Token-1: "+ str(self.token))
+        #print("API Token-1: "+ str(self.token))
         return data
 
     ##Create applications on the destination customer pulled from the source customer
@@ -32,7 +33,7 @@ class Customer:
         self.payload = ('{"name": ' + str(app_name) + ', "description": ' + str(app_description) + '}')
         response = requests.post(self.url, headers=self.headers, data = self.payload)
         print(response.text.encode('utf8'))
-        print("API Token: "+ str(self.token))
+        #print("API Token: "+ str(self.token))
 
         location = response.headers.get('Location', None)
         if location:
