@@ -24,9 +24,16 @@ else:
 
 #print(app_enumeration)
 
-create_app_in_cust_two = Customer(token_destination)
+create_app_in_customer_destination = Customer(token_destination)
 for app in app_enumeration:
-    create_app_in_cust_two.create_apps(app['name'], app.get('description', ''))
+    create_app_in_customer_destination.create_apps(app['name'], app.get('description', " "))
+
+enumerate_origin_configs = Customer(token_original)
+if token_original != "":
+for id in app_enumeration:
+    config_enumeration = enumerate_origin_configs.get_apps()
+else:
+    print("Original Customer API Key is missing.")
 
 """
 
@@ -42,13 +49,8 @@ for app in app_enumeration:
 
 """
 """
-- pull app names from old customer -> app_list
-    - app_list - content
-        - app id
-        - app name
-        - app description
-- create apps in new customer based on app name(s) in app_list
 
+## Not sure if we should do this ##
 - pull users from old customer -> user_list
     - user_list - content
         - user name
@@ -57,8 +59,19 @@ for app in app_enumeration:
 - iterate through apps to pull configs from each app -> config_list
     - config_list - content
         - config name
-        - config.xml
-        - files
+
+- iterate through scan_configs from each app and create configs in each app on destination customer -> scan_configs
+
+- iterate through scan_configs from each app on original customer and output files to tmp directory
+
+- iterate through scan_configs from each app and upload files from tmp directory to destination customer -> file id's
+    - file_ids - content
+        - file name (represented by file id)
+
+- iterate through scan config options from each scan config in each app -> scan_config_options
+    - scan_config_options - content
+        - config json blob
+
 
 - pull app ids and names from new customer -> app_list_new
     - app_list_new - content
