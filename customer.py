@@ -5,7 +5,7 @@ url_base = "https://us.api.insight.rapid7.com/ias/v1"
 ##Customer class to handle all work done with both source and destination customers
 class Customer:
     def __init__(self, token):
-        self.url = url_base + "/"
+        self.url = url_base + '/'
         self.payload = {}
         self.headers = {
             'Accept': 'application/json',
@@ -16,7 +16,7 @@ class Customer:
 ##Get apps from the original customer to be used to create apps on destination customer and copy configs over to
 ##the corresponding new application
     def get_apps(self):
-        self.url = url_base + "/apps"
+        self.url = url_base + '/apps'
         self.payload = {}
         try:
             response = requests.get(self.url, headers=self.headers, data = self.payload)
@@ -24,13 +24,41 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
+        ## enumerate configs
+        for app_data in data:
+            app_data['configs'] = self.get_configs(app_data['id'])
+            
         return data
+
+        ## get sub data
+    def get_configs(self, app_id):
+        self.url = url_base + '/search'
+        self.payload = ('{\n\t"query": "scanconfig.app.id = ' + str(app_id) + '",' '\n\t"type": "SCAN_CONFIG"\n}')
+        try:
+            response = requests.post(self.url, headers=self.headers, data = self.payload)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        print(self.payload)
+        print(response.text.encode('utf8'))
+
+        configs = response.json().get('data')
+        ## file enumeration
+        for config in configs:
+            config['files'] = self.get_files()
+            config['config_options'] = self.get_config_options
+        print(configs)
+        return configs
+
+        def get_files
+
+        def get_config_options
 
     """
     ##Create applications on the destination customer pulled from the source customer
     def create_apps(self, app_name, app_description):
         self.url = url_base + "/apps"
-        self.payload = ('{\n\t"name": \"' + str(app_name) + '\",' '\n\t"description": \"' + str(app_description) + '\"' '\n}')
+        self.payload = ('{\n\t"name": "' + str(app_name) + '",' '\n\t"description": "' + str(app_description) + '"' '\n}')
         response = requests.post(self.url, headers=self.headers, data = self.payload)
         print(self.payload)
         #print(response.text.encode('utf8'))
@@ -39,7 +67,7 @@ class Customer:
         if location:
             print("successfully create: "+ app_name)
         return 
-    """
+ 
 
 
     ##Get configs from the Original customer
@@ -57,6 +85,7 @@ class Customer:
         data = response.json().get('data')
         return data
 
+    """
     """
     ##Get appid for apps created on the destination customer
     def get_new_app_id():

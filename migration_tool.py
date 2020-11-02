@@ -22,20 +22,16 @@ if token_original != "":
 else:
     print("Original Customer API Key is missing.")
 
-#print(app_enumeration)
+print(app_enumeration)
+
+
+"""
+## Create Apps in Customer Destination
 
 create_app_in_customer_destination = Customer(token_destination)
 for app in app_enumeration:
     create_app_in_customer_destination.create_apps(app['name'], app.get('description', " "))
 
-enumerate_origin_configs = Customer(token_original)
-if token_original != "":
-for id in app_enumeration:
-    config_enumeration = enumerate_origin_configs.get_apps()
-else:
-    print("Original Customer API Key is missing.")
-
-"""
 
 ##Enumerate app_list to create a list of apps with their appid, name and description
 ##This will be used to feed back into the customer class to tell the create_apps function what apps to create
