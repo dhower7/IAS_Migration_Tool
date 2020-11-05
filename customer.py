@@ -16,10 +16,10 @@ class Customer:
 ##Get apps from the original customer to be used to create apps on destination customer and copy configs over to
 ##the corresponding new application
     def get_apps(self):
-        self.url = url_base + '/apps'
-        self.payload = {}
+        #print("getting apps")
+        url = url_base + '/apps'
         try:
-            response = requests.get(self.url, headers=self.headers, data = self.payload)
+            response = requests.get(url, headers=self.headers)
             response.raise_for_status()
         except requests.HTTPError as exception:
             return exception
@@ -27,33 +27,58 @@ class Customer:
         ## enumerate configs
         for app_data in data:
             app_data['configs'] = self.get_configs(app_data['id'])
-            
         return data
 
         ## get sub data
     def get_configs(self, app_id):
-        self.url = url_base + '/search'
-        self.payload = ('{\n\t"query": "scanconfig.app.id = ' + str(app_id) + '",' '\n\t"type": "SCAN_CONFIG"\n}')
+        #print("getting configs")
+        url = f"{url_base}/search"
+        payload = {
+            "query": f"scanconfig.app.id = '{app_id}'",
+            "type": "SCAN_CONFIG"
+            }
         try:
-            response = requests.post(self.url, headers=self.headers, data = self.payload)
+            response = requests.post(url, headers=self.headers, json = payload)
             response.raise_for_status()
         except requests.HTTPError as exception:
             return exception
-        print(self.payload)
-        print(response.text.encode('utf8'))
+        #print(self.payload)
+        #print(response.text.encode('utf8'))
 
-        configs = response.json().get('data')
+        data = response.json().get('data')
         ## file enumeration
-        for config in configs:
-            config['files'] = self.get_files()
-            config['config_options'] = self.get_config_options
-        print(configs)
-        return configs
+        for config in data:
+            #app_id = self.get_files(app_id)
+            config['files'] = self.get_files(app_id)
+            config['config_options'] = self.get_config_options(config['id'])
+        return data
+        #print(self.payload)
+        #print(response.text.encode('utf8'))
+        #print(config.get['files'])
+    
+    def get_files(self, app_id):
+        #print("getting files")
+        url = f"{url_base}/apps/{app_id}/files"
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        data = response.json().get('data')
 
-        def get_files
-
-        def get_config_options
-
+        return data
+           
+    
+    def get_config_options(self, config_id):
+        #print("get config options:")
+        url = f"{url_base}/scan-configs/{config_id}/options"
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        data = response.json().get('data')
+    
     """
     ##Create applications on the destination customer pulled from the source customer
     def create_apps(self, app_name, app_description):
