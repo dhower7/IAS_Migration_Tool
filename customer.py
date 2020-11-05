@@ -42,8 +42,6 @@ class Customer:
             response.raise_for_status()
         except requests.HTTPError as exception:
             return exception
-        #print(self.payload)
-        #print(response.text.encode('utf8'))
 
         data = response.json().get('data')
         ## file enumeration
@@ -52,9 +50,6 @@ class Customer:
             config['files'] = self.get_files(app_id)
             config['config_options'] = self.get_config_options(config['id'])
         return data
-        #print(self.payload)
-        #print(response.text.encode('utf8'))
-        #print(config.get['files'])
     
     def get_files(self, app_id):
         #print("getting files")
