@@ -16,8 +16,76 @@ class Customer:
 ##Get apps from the original customer to be used to create apps on destination customer and copy configs over to
 ##the corresponding new application
     def get_apps(self):
+<<<<<<< Updated upstream
         self.url = url_base + "/apps"
         self.payload = {}
+=======
+        print("Getting Apps")
+        url = f"{url_base}/apps"
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        data = response.json().get('data')
+        ## enumerate configs
+        for app_data in data:
+            app_data['configs'] = self.get_configs(app_data['id'])
+        return data
+
+        ## get sub data
+    def get_configs(self, app_id):
+        print("Getting Configs")
+        url = f"{url_base}/search"
+        payload = {
+            "query": f"scanconfig.app.id = '{app_id}'",
+            "type": "SCAN_CONFIG"
+            }
+        try:
+            response = requests.post(url, headers=self.headers, json = payload)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+
+        data = response.json().get('data')
+        ## file enumeration
+        for config in data:
+            #app_id = self.get_files(app_id)
+            config['files'] = self.get_files(app_id)
+            config['config_options'] = self.get_config_options(config['id'])
+        return data
+    
+    def get_files(self, app_id):
+        print("Getting Files")
+        url = f"{url_base}/apps/{app_id}/files"
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        data = response.json().get('data')
+        return data
+           
+    def download_files(self, file_id):
+        print("Downloading Files")
+        pass
+    
+    def get_config_options(self, config_id):
+        print("Getting Config Options:")
+        #doesn't seem to be passing config ids
+        import pdb; pdb.set_trace()
+        url = f"{url_base}/scan-configs/{config_id}/options"
+        try:
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as exception:
+            return exception
+        data = response.json().get('data')
+
+    def get_engine_groups(self):
+        print("Getting Engine Groups")
+        url = f"{url_base}/engine-groups"
+>>>>>>> Stashed changes
         try:
             response = requests.get(self.url, headers=self.headers, data = self.payload)
             response.raise_for_status()
