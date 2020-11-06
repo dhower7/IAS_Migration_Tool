@@ -77,16 +77,16 @@ class Customer:
     
     def get_config_options(self, config_id):
         print("Getting Config Options:")
-        #doesn't seem to be passing config ids
         url = f"{url_base}/scan-configs/{config_id}/options"
         try:
             response = requests.get(url, headers=self.headers)
             response.raise_for_status()
         except requests.HTTPError as exception:
             return exception
-        data = response.json().get('data')
-        print(url)
-        print(self.headers)
+        data = response.json()
+        #print(f"Request URL: {url}")
+        #print(f"Request Headers: {self.headers}")
+        #print(f"Request Response: {response.content}")
         return data
 
     def get_engine_groups(self):
@@ -136,13 +136,14 @@ class Customer:
 
 
     ##Create applications on the destination customer pulled from the source customer
-    def create_base(self, app_name, app_description):
+    def create_base(self, app):
         customer = {}
-        customer['engine groups'] = create_engine_groups()
-        customer['attack_templates'] = create_attack_templates()
-        customer['apps'] = create_apps()
-        customer['schedules'] = create_schedules()
-        customer['blackouts'] = create_blackouts()
+        customer['engine groups'] = self.create_engine_groups(app.get('id'))
+        customer['attack_templates'] = self.create_attack_templates()
+        customer['apps'] = self.create_apps()
+        customer['schedules'] = self.create_schedules()
+        customer['blackouts'] = self.create_blackouts()
+        return
 
     def create_apps(self, **apps):
         print("Creating Apps:")
@@ -152,13 +153,14 @@ class Customer:
             "description": f"{app_description}"
             }
         response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
         print(payload)
         print(response.text.encode('utf8'))
 
         location = response.headers.get('Location', None)
         if location:
             print("successfully create: "+ app_name)
-        return 
+        return data
 
     ##Create configs on the destination customer based on the configs pulled from the original customer
     def create_configs(self):
@@ -181,8 +183,10 @@ class Customer:
     def create_files(self):
         print("Creating Files:")
         url = f"{url_base}/apps/{app_id}/files"
-        payload = {f"{"}
+        payload = {f""}
         response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
         print(payload)
         print(response.text.encode('utf8'))
 
@@ -194,10 +198,13 @@ class Customer:
                 f"{app_id}"
                 },
             "attack_template": {
-                f"{attack_template}""
+                f"{attack_template}"
+            },
             "name": f"{config_name}",
             }
         response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
         print(payload)
         print(response.text.encode('utf8'))
 
@@ -208,9 +215,10 @@ class Customer:
         url = f"{url_base}/scan-configs/{config_id}/options"
         payload = {f"{config_options}"}
         response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
         print(payload)
         print(response.text.encode('utf8'))
-        return 
+        return data
 
     def create_engine_groups(self, group_name, group_description):
         print("Creating Engine Groups:")
@@ -220,14 +228,25 @@ class Customer:
             "description": f"{group_description}"
         }
         response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
     def create_attack_templates(self):
         print("Creating Attack Templates:")
+        response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
         pass
 
     def create_schedules(self):
         print("Creating Schedules:")
+        response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
         pass
 
     def create_blackouts(self):
         print("Creating Blackouts:")
+        response = requests.post(url, headers=self.headers, json = payload)
+        data = response.json().get('data')
+        return data
         pass

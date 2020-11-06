@@ -30,6 +30,6 @@ print(app_enumeration)
 
 create_app_in_customer_destination = Customer(token_destination)
 for app in app_enumeration:
-    app_creation = create_app_in_customer_destination.create_base(app['name'], app.get('description', " "))
+    app_creation = create_app_in_customer_destination.create_base(**app)
     ##create_app_in_customer_destination.create_apps(app['name'], app.get('description', " "))
 """
