@@ -12,6 +12,15 @@ class Customer:
             'Content-Type': 'application/json',
             'x-api-key': token
             }
+    
+    def get_base(self):
+        customer = {}
+        customer['engine groups'] = self.get_engine_groups()
+        customer['attack templates'] = self.get_attack_templates()
+        customer['schedules'] = self.get_schedules()
+        customer['blackouts'] = self.get_blackouts()
+        customer['apps'] = self.get_apps()
+        return customer
 
 ##Get apps from the original customer to be used to create apps on destination customer and copy configs over to
 ##the corresponding new application
@@ -48,7 +57,7 @@ class Customer:
         for config in data:
             #app_id = self.get_files(app_id)
             config['files'] = self.get_files(app_id)
-            config['config_options'] = self.get_config_options(config['id'])
+            config['config options'] = self.get_config_options(config['id'])
         return data
     
     def get_files(self, app_id):
@@ -76,6 +85,9 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
+        print(url)
+        print(self.headers)
+        return data
 
     def get_engine_groups(self):
         print("Getting Engine Groups")
@@ -86,11 +98,6 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
-        """
-        ## enumerate configs
-        for app_data in data:
-            app_data['configs'] = self.get_configs(app_data['id'])
-        """
         return data
 
     def get_attack_templates(self):
@@ -102,11 +109,7 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
-        """
-        ## enumerate configs
-        for app_data in data:
-            app_data['configs'] = self.get_configs(app_data['id'])
-        """
+        return data
 
     def get_schedules(self):
         print("Getting Schedules")
@@ -117,11 +120,8 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
-        """
-        ## enumerate configs
-        for app_data in data:
-            app_data['configs'] = self.get_configs(app_data['id'])
-        """
+        return data
+
 
     def get_blackouts(self):
         print("Getting Blackouts")
@@ -132,19 +132,24 @@ class Customer:
         except requests.HTTPError as exception:
             return exception
         data = response.json().get('data')
-        """
-        ## enumerate configs
-        for app_data in data:
-            app_data['configs'] = self.get_configs(app_data['id'])
-        """
-    """
+        return data
+
+
     ##Create applications on the destination customer pulled from the source customer
-    def create_apps(self, app_name, app_description):
+    def create_base(self, app_name, app_description):
+        customer = {}
+        customer['engine groups'] = create_engine_groups()
+        customer['attack_templates'] = create_attack_templates()
+        customer['apps'] = create_apps()
+        customer['schedules'] = create_schedules()
+        customer['blackouts'] = create_blackouts()
+
+    def create_apps(self, **apps):
         print("Creating Apps:")
         url = f"{url_base}/apps"
         payload = {
             "name": f"{app_name}",
-            "description": f"{app_description}""
+            "description": f"{app_description}"
             }
         response = requests.post(url, headers=self.headers, json = payload)
         print(payload)
@@ -156,7 +161,7 @@ class Customer:
         return 
 
     ##Create configs on the destination customer based on the configs pulled from the original customer
-    def create_configs():
+    def create_configs(self):
         print("Creating Configs:")
         url = f"{url_base}/scan-configs"
         payload = {
@@ -164,15 +169,16 @@ class Customer:
                 f"{app_id}"
                 },
             "attack_template": {
-                f"{attack_template}""
+                f"{attack_template}"
+            },
             "name": f"{config_name}",
+            "description": f"{config_description}"
             }
         response = requests.post(url, headers=self.headers, json = payload)
-        print(payload)
-        print(response.text.encode('utf8'))
-        return 
+        data = response.json().get('data')
+        return data
     
-    def create_files():
+    def create_files(self):
         print("Creating Files:")
         url = f"{url_base}/apps/{app_id}/files"
         payload = {f"{"}
@@ -180,7 +186,7 @@ class Customer:
         print(payload)
         print(response.text.encode('utf8'))
 
-    def upload_files():
+    def upload_files(self):
         print("Uploading Files:")
         url = f"{url_base}/scan-configs"
         payload = {
@@ -197,8 +203,8 @@ class Customer:
 
     #refactor due to file id's changing when creating in new system
     #add Content-Type: applciation/octet-stream 
-    def update_config_options():
-        print("Updating Configs Options:")
+    def update_config_options(self):
+        print("Updating Config Options:")
         url = f"{url_base}/scan-configs/{config_id}/options"
         payload = {f"{config_options}"}
         response = requests.post(url, headers=self.headers, json = payload)
@@ -206,15 +212,22 @@ class Customer:
         print(response.text.encode('utf8'))
         return 
 
-    def create_engine_groups(self,):
+    def create_engine_groups(self, group_name, group_description):
+        print("Creating Engine Groups:")
+        url = f"{url_base}/engine-groups"
+        payload = {
+            "name": f"{group_name}",
+            "description": f"{group_description}"
+        }
+        response = requests.post(url, headers=self.headers, json = payload)
+    def create_attack_templates(self):
+        print("Creating Attack Templates:")
         pass
 
-    def create_attack_templates(self,):
+    def create_schedules(self):
+        print("Creating Schedules:")
         pass
 
-    def create_schedules(self,):
+    def create_blackouts(self):
+        print("Creating Blackouts:")
         pass
-
-    def create_blackouts(self,):
-        pass
-    """
