@@ -15,21 +15,32 @@ token_destination = ('0c47f4a0-a3a5-411c-9e6b-149190618560')
 
 
 ##Enumerate applications in the original customer
-enumerate_origin_apps = Customer(token_original)
+customer_data = Customer(token_original)
 if token_original != "":
-#    enumerate_origin_apps.get_apps()
-    app_enumeration = enumerate_origin_apps.get_base()
+    app_enumeration = customer_data.get_base()
 else:
     print("Original Customer API Key is missing.")
 
-print(app_enumeration)
+#print(app_enumeration)
+
+
+## Create Apps in Customer Destination
+
+
+customer_data.set_token(token_destination)
+if token_destination != "":
+    app_creation = customer_data.create_base()
+else:
+    print("Destination Customer API Key is missing")
+
 
 
 """
-## Create Apps in Customer Destination
-
-create_app_in_customer_destination = Customer(token_destination)
+customer_data.set_token(token_destination)
 for app in app_enumeration:
-    app_creation = create_app_in_customer_destination.create_base(**app)
-    ##create_app_in_customer_destination.create_apps(app['name'], app.get('description', " "))
+    if token_destination != "":
+        app_creation = customer_data.create_base()
+        #create_app_in_customer_destination.create_base(app['name'], app.get('description', " "))
+    else:
+        print("Destination Customer API Key is missing")
 """
